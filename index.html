@@ -1,70 +1,26 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MACHINES v3</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEO Machines Dashboard</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
-.container{max-width:1200px;margin:0 auto}
-h1{font-size:1.5rem;margin-bottom:2px}.sub{color:#64748b;font-size:.85rem;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:24px}
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;position:relative}
-.card .dot{position:absolute;top:14px;right:14px;width:10px;height:10px;border-radius:50%}
-.card h2{font-size:.7rem;text-transform:uppercase;color:#64748b;letter-spacing:.05em;margin-bottom:12px}
-.mg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.mt{background:#0f172a;border-radius:8px;padding:10px;text-align:center}
-.mt .l{color:#64748b;font-size:.6rem;text-transform:uppercase;margin-bottom:2px}
-.mt .v{font-size:1.1rem;font-weight:700}
-.bar{height:6px;background:#334155;border-radius:3px;margin-top:6px;overflow:hidden}
-.bar-f{height:100%;border-radius:3px;transition:width .6s}
-.chart-row{display:grid;grid-template-columns:1fr;gap:16px}
-.chart-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px}
-.chart-box h3{font-size:.7rem;text-transform:uppercase;color:#64748b;margin-bottom:8px;letter-spacing:.05em}
-@media(min-width:768px){.chart-row{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
-<div class="container">
-<h1> MACHINES LEO</h1>
-<p class="sub">30/06/2026 20:20</p>
-<div class="grid" id="cards"></div>
-<div class="chart-row">
-<div class="chart-box"><h3>DISQUE</h3><canvas id="cDisk"></canvas></div>
-<div class="chart-box"><h3>RAM</h3><canvas id="cRam"></canvas></div>
-</div>
-</div>
-<script>
-const data=[{"n": "LEO", "cpu": 0.18, "ram": 17.3, "disk": 17.0, "ok": true}, {"n": "Penguin", "cpu": 0.0, "ram": 0, "disk": 0.0, "ok": false}, {"n": "Yoga", "cpu": 0.0, "ram": 0, "disk": 0.0, "ok": true}];
-const d=JSON.parse(data);
-const colors={LEO:"#3b82f6",Penguin:"#22c55e",Yoga:"#f59e0b"};
-const names={LEO:"LEO",Penguin:"Penguin",Yoga:"Yoga"};
-function cards(){
-  let h="";
-  d.forEach(m=>{
-    const c=m.ok?"#22c55e":"#ef4444";
-    const dc=m.disk>80?"#ef4444":m.disk>60?"#f59e0b":"#22c55e";
-    const rc=m.ram>80?"#ef4444":m.ram>60?"#f59e0b":"#22c55e";
-    h+='<div class="card" style="border-left:3px solid '+c+'"><div class="dot" style="background:'+c+'"></div><h2>'+names[m.n]+'</h2><div class="mg">'
-    +'<div class="mt"><div class="l">CPU</div><div class="v">'+m.cpu.toFixed(2)+'</div></div>'
-    +'<div class="mt"><div class="l">RAM</div><div class="v" style="color:'+rc+'">'+m.ram+'</div><div class="bar"><div class="bar-f" style="width:'+m.ram+'%;background:'+rc+'"></div></div></div>'
-    +'<div class="mt"><div class="l">DISQUE</div><div class="v" style="color:'+dc+'">'+m.disk+'</div><div class="bar"><div class="bar-f" style="width:'+m.disk+'%;background:'+dc+'"></div></div></div>'
-    +'</div></div>';
-  });
-  document.getElementById("cards").innerHTML=h;
-}
-cards();
-function mk(id,l,key){
-  new Chart(document.getElementById(id),{
-    type:"bar",
-    data:{labels:d.map(m=>names[m.n]),datasets:[{label:l,data:d.map(m=>m[key]),backgroundColor:d.map(m=>colors[m.n]||"#3b82f6"),borderRadius:6,borderSkipped:false}]},
-    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{beginAtZero:true,max:100,grid:{color:"#1e293b"},ticks:{color:"#64748b"}},
-              y:{grid:{display:false},ticks:{color:"#94a3b8",font:{size:12}}}}}});
-}
-mk("cDisk","Disque","disk");
-mk("cRam","RAM","ram");
-</script>
-</body>
-</html>
+body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px}
+h1{font-size:1.5rem;margin-bottom:2px}
+.sub{color:#64748b;font-size:.85rem;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px}
+.card h3{font-size:.7rem;text-transform:uppercase;color:#64748b;margin-bottom:8px;letter-spacing:.05em}
+.card div{font-size:.85rem;margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;padding:8px 6px;color:#64748b;font-weight:500;border-bottom:1px solid #334155;font-size:.7rem;text-transform:uppercase}
+td{padding:6px;border-bottom:1px solid #334155}
+.ok{color:#22c55e}.warn{color:#f59e0b}.err{color:#ef4444}
+</style></head><body><div style="max-width:1300px;margin:0 auto">
+<h1>LEO Machines Dashboard</h1>
+<p class="sub">30/06/2026 20:46 | Source: Google Sheets</p>
+<div class="grid"><div class="card" style="border-left:3px solid #22c55e"><h3>LEO</h3><div>Uptime: 0.21h</div><div>Disk: <span class="ok">14%</span></div><div>RAM: <span class="ok">15,9%</span></div></div><div class="card" style="border-left:3px solid #f59e0b"><h3>Yoga</h3><div>Uptime: 100h</div><div>Disk: <span class="ok">54%</span></div><div>RAM: <span class="ok">57,7%</span></div></div><div class="card" style="border-left:3px solid #a78bfa"><h3>Penguin</h3><div>Uptime: 0.00h</div><div>Disk: <span class="ok">5%</span></div><div>RAM: <span class="ok">68,3%</span></div></div></div>
+<h2>Evolution</h2><p>LEO: 11% | Yoga: 54% | Penguin: 14%</p>
+<h2>Historique</h2>
+<table><tr><th>🖥️ LEO (Serveur)</th></tr><tr><td>Date</td><td>Uptime (h)</td><td>Disque Total (Go)</td><td>Disque Libre (Go)</td><td>Disque %</td><td>RAM Total (Go)</td><td>RAM Utilisée (Go)</td><td>RAM %</td></tr><tr><td>13/06/2026</td><td>0</td><td>0</td><td>0</td><td>0</td><td>22</td><td>0</td><td>0</td></tr><tr><td>13/06/2026</td><td>0</td><td>0</td><td>0</td><td>0</td><td>22</td><td>0</td><td>0</td></tr><tr><td>13/06/2026</td><td>0</td><td>457</td><td>388</td><td>11</td><td>22</td><td>3,6</td><td>0</td></tr><tr><td>13/06/2026</td><td>0</td><td>457</td><td>388</td><td>11</td><td>22</td><td>3,6</td><td>16,4</td></tr><tr><td>13/06/2026</td><td>0.38</td><td>457</td><td>388</td><td>11</td><td>22</td><td>3,6</td><td>16,4</td></tr><tr><td>13/06/2026</td><td>0.15</td><td>457</td><td>388</td><td>11</td><td>22</td><td>3,6</td><td>16,4</td></tr><tr><td>13/06/2026 09:11</td><td>0.37</td><td>457</td><td>388</td><td>11</td><td>22</td><td>3,6</td><td>16,4</td></tr><tr><td>14/06/2026 03:46</td><td>0.21</td><td>457</td><td>375</td><td>14</td><td>22</td><td>3,5</td><td>15,9</td></tr></table>
+<p class="sub" style="margin-top:20px">Donnees figees au 14/06/2026. Le collecteur n a pas tourne depuis le crash.</p>
+</div></body></html>
