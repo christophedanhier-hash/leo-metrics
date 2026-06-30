@@ -1,1 +1,70 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>== MACHINES LEO DASH v3</title><script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,"Segoe UI",sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}.container{max-width:1200px;margin:0 auto}h1{font-size:1.4rem;margin-bottom:2px}.sub{color:#64748b;font-size:.85rem;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:20px}.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px}.card h2{font-size:.7rem;text-transform:uppercase;color:#64748b;letter-spacing:.05em;margin-bottom:10px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.metric{background:#0f172a;border-radius:8px;padding:8px;text-align:center}.metric .label{color:#64748b;font-size:.65rem;text-transform:uppercase}.metric .value{font-size:1rem;font-weight:600;margin-top:2px}.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chart-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;margin-bottom:16px}.chart-box h3{font-size:.7rem;text-transform:uppercase;color:#64748b;margin-bottom:8px;letter-spacing:.05em}@media(max-width:640px){.chart-row{grid-template-columns:1fr}}</style></head><body><div class="container"><h1>MACHINES LEO</h1><p class="sub">30/06/2026 20:15</p><div class="grid" id="cards"></div><div class="chart-row"><div class="chart-box"><h3>DISQUE</h3><canvas id="diskChart"></canvas></div><div class="chart-box"><h3>RAM</h3><canvas id="ramChart"></canvas></div></div></div><script>const data=[{"name": "LEO", "cpu": 0.14, "ram": 0, "disk": 17.0, "online": true}];const cols={LEO:"#3b82f6",Penguin:"#22c55e",Yoga:"#f59e0b"};const names={LEO:"LEO",Penguin:"Penguin",Yoga:"Yoga"};function renderCards(){let h="";data.forEach(m=>{const c=m.online?"#22c55e":"#ef4444";const dc=m.disk>80?"#ef4444":m.disk>60?"#f59e0b":"#22c55e";const rc=m.ram>80?"#ef4444":m.ram>60?"#f59e0b":"#22c55e";h+="<div class=\"card\" style=\"border-left:3px solid "+c+"\"><h2>"+names[m.name]+"</h2>"+"<div class=\"metric-grid\"><div class=\"metric\"><div class=\"label\">CPU</div><div class=\"value\">"+m.cpu.toFixed(2)+"</div></div>"+"<div class=\"metric\"><div class=\"label\">RAM</div><div class=\"value\" style=\"color:"+rc+"\">"+m.ram+"</div></div>"+"<div class=\"metric\"><div class=\"label\">Disque</div><div class=\"value\" style=\"color:"+dc+"\">"+m.disk+"</div></div>"+"<div class=\"metric\"><div class=\"label\">Statut</div><div class=\"value\" style=\"color:"+c+"\">"+(m.online?"Online":"Offline")+"</div></div></div></div>"});document.getElementById("cards").innerHTML=h;}renderCards();function makeChart(id,label,key){const ctx=document.getElementById(id).getContext("2d");new Chart(ctx,{type:"bar",data:{labels:data.map(m=>names[m.name]),datasets:[{label:label,data:data.map(m=>m[key]),backgroundColor:data.map(m=>cols[m.name]||"#3b82f6"),borderRadius:6,borderSkipped:false}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,max:100,grid:{color:"#1e293b"},ticks:{color:"#64748b"}},y:{grid:{display:false},ticks:{color:"#94a3b8",font:{size:11}}}}}});}makeChart("diskChart","Disque","disk");makeChart("ramChart","RAM","ram");</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MACHINES v3</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f172a;color:#e2e8f0;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:1.5rem;margin-bottom:2px}.sub{color:#64748b;font-size:.85rem;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;position:relative}
+.card .dot{position:absolute;top:14px;right:14px;width:10px;height:10px;border-radius:50%}
+.card h2{font-size:.7rem;text-transform:uppercase;color:#64748b;letter-spacing:.05em;margin-bottom:12px}
+.mg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.mt{background:#0f172a;border-radius:8px;padding:10px;text-align:center}
+.mt .l{color:#64748b;font-size:.6rem;text-transform:uppercase;margin-bottom:2px}
+.mt .v{font-size:1.1rem;font-weight:700}
+.bar{height:6px;background:#334155;border-radius:3px;margin-top:6px;overflow:hidden}
+.bar-f{height:100%;border-radius:3px;transition:width .6s}
+.chart-row{display:grid;grid-template-columns:1fr;gap:16px}
+.chart-box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px}
+.chart-box h3{font-size:.7rem;text-transform:uppercase;color:#64748b;margin-bottom:8px;letter-spacing:.05em}
+@media(min-width:768px){.chart-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1> MACHINES LEO</h1>
+<p class="sub">30/06/2026 20:19</p>
+<div class="grid" id="cards"></div>
+<div class="chart-row">
+<div class="chart-box"><h3>DISQUE</h3><canvas id="cDisk"></canvas></div>
+<div class="chart-box"><h3>RAM</h3><canvas id="cRam"></canvas></div>
+</div>
+</div>
+<script>
+const data=[{"n": "LEO", "cpu": 0.07, "ram": 0, "disk": 17.0, "ok": true}, {"n": "Penguin", "cpu": 0.0, "ram": 0, "disk": 0.0, "ok": false}, {"n": "Yoga", "cpu": 0.0, "ram": 0, "disk": 0.0, "ok": true}];
+const d=JSON.parse(data);
+const colors={LEO:"#3b82f6",Penguin:"#22c55e",Yoga:"#f59e0b"};
+const names={LEO:"LEO",Penguin:"Penguin",Yoga:"Yoga"};
+function cards(){
+  let h="";
+  d.forEach(m=>{
+    const c=m.ok?"#22c55e":"#ef4444";
+    const dc=m.disk>80?"#ef4444":m.disk>60?"#f59e0b":"#22c55e";
+    const rc=m.ram>80?"#ef4444":m.ram>60?"#f59e0b":"#22c55e";
+    h+='<div class="card" style="border-left:3px solid '+c+'"><div class="dot" style="background:'+c+'"></div><h2>'+names[m.n]+'</h2><div class="mg">'
+    +'<div class="mt"><div class="l">CPU</div><div class="v">'+m.cpu.toFixed(2)+'</div></div>'
+    +'<div class="mt"><div class="l">RAM</div><div class="v" style="color:'+rc+'">'+m.ram+'</div><div class="bar"><div class="bar-f" style="width:'+m.ram+'%;background:'+rc+'"></div></div></div>'
+    +'<div class="mt"><div class="l">DISQUE</div><div class="v" style="color:'+dc+'">'+m.disk+'</div><div class="bar"><div class="bar-f" style="width:'+m.disk+'%;background:'+dc+'"></div></div></div>'
+    +'</div></div>';
+  });
+  document.getElementById("cards").innerHTML=h;
+}
+cards();
+function mk(id,l,key){
+  new Chart(document.getElementById(id),{
+    type:"bar",
+    data:{labels:d.map(m=>names[m.n]),datasets:[{label:l,data:d.map(m=>m[key]),backgroundColor:d.map(m=>colors[m.n]||"#3b82f6"),borderRadius:6,borderSkipped:false}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{beginAtZero:true,max:100,grid:{color:"#1e293b"},ticks:{color:"#64748b"}},
+              y:{grid:{display:false},ticks:{color:"#94a3b8",font:{size:12}}}}}});
+}
+mk("cDisk","Disque","disk");
+mk("cRam","RAM","ram");
+</script>
+</body>
+</html>
